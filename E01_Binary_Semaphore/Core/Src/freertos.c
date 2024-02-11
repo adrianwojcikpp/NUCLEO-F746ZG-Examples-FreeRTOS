@@ -166,11 +166,17 @@ void StartLd2ToggleTask(void *argument)
   */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-  // Binary semaphore is released
-  osSemaphoreRelease(semaphoreLd2Handle);
-
-  // Listen for message and call UART Rx callback when received
-  HAL_UART_Receive_IT(&huart3, com_rx, com_rx_len);
+  // If binary semaphore is successfully released
+  if(osSemaphoreRelease(semaphoreLd2Handle) == osOK)
+  {
+    // Listen for message and call UART Rx callback when received
+    HAL_UART_Receive_IT(&huart3, com_rx, com_rx_len);
+  }
+  else
+  {
+    // Turn on red LED
+    HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
+  }
 }
 /* USER CODE END Application */
 
