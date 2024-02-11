@@ -138,7 +138,7 @@ void StartLd2ToggleTask(void *argument)
   // Listen for message and call UART Rx callback when received
   HAL_UART_Receive_IT(&huart3, com_rx, com_rx_len);
 
-  uint32_t semaphoreLd2Timeout = 2000; // milliseconds
+  uint32_t semaphoreLd2Timeout = 10; // milliseconds
 
   /* Infinite loop */
   for(;;)
@@ -153,6 +153,9 @@ void StartLd2ToggleTask(void *argument)
     // Toggle green LED after each binary semaphore
     // acquisition attempt (success or timeout)
     HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
+
+    // Some idle time between semaphore acquisition attempts
+    osDelay(1000);
   }
   /* USER CODE END StartLd2ToggleTask */
 }
