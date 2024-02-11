@@ -245,7 +245,7 @@ void StartMsgParseTask(void *argument)
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
   // If adding received message to queue is successful
-  if(osMessageQueuePut(msgQueueHandle, (void*)com_rx, 0, 0) == osOK)
+  if(osMessageQueuePut(msgQueueHandle, (void*)com_rx, 0, 0 /* Must be 0 in IT */) == osOK)
   {
 #ifdef SERIAL_PORT_ECHO
     // Send back queue count
